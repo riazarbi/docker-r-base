@@ -1,5 +1,5 @@
 # Lock to a particular Ubuntu image
-FROM ubuntu:focal-20240123
+FROM ubuntu:24.04
 LABEL authors="Riaz Arbi,Gordon Inggs"
 
 # BASE ==========================================
@@ -11,6 +11,10 @@ ENV TZ="Africa/Johannesburg" \
     TERM=xterm
 
 # Let's make it a bit more functional
+
+# Delete user 1000 - added in 24.04
+RUN userdel -r ubuntu
+
 RUN DEBIAN_FRONTEND=noninteractive \
     apt-get clean && \
     DEBIAN_FRONTEND=noninteractive \
@@ -53,7 +57,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
     libedit2 \
     lsb-release \
     psmisc \
-    libssl1.1 \
+    libssl3 \
     gnupg \
     apt-transport-https \
 # Set python3 to default
@@ -84,7 +88,7 @@ RUN echo $TZ > /etc/timezone \
     unixodbc-dev \
     #unixodbc-bin \
     unixodbc \
-    libaio1 \
+    libaio1t64 \
     alien 
     # Microsoft driver
 RUN wget https://packages.microsoft.com/keys/microsoft.asc -O microsoft.asc && \
@@ -113,16 +117,15 @@ ENV LD_LIBRARY_PATH /usr/lib/oracle/21/client64/lib/${LD_LIBRARY_PATH:+:$LD_LIBR
 
 # PYTHON ======================================================================
 # Infrastructure-dependent prerequisites
-RUN python3 -m pip install --upgrade pip setuptools wheel \
- && python3 -m pip install minio \
- && python3 -m pip install pyhdb \
- && python3 -m pip install pandas \
- && python3 -m pip install pyarrow \
- && python3 -m pip install python-magic \
- && python3 -m pip install pyhive[presto] \
- && python3 -m pip install trino \
- && python3 -m pip install presto-python-client \
- && python3 -m pip install exchangelib \
+RUN python3 -m pip install minio --break-system-packages \
+ && python3 -m pip install pyhdb --break-system-packages \
+ && python3 -m pip install pandas --break-system-packages \
+ && python3 -m pip install pyarrow --break-system-packages \
+ && python3 -m pip install python-magic --break-system-packages \
+ && python3 -m pip install pyhive[presto] --break-system-packages \
+ && python3 -m pip install trino --break-system-packages \
+ && python3 -m pip install presto-python-client --break-system-packages \
+ && python3 -m pip install exchangelib --break-system-packages \
  && rm -rf /tmp/*
  
  
