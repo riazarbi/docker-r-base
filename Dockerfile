@@ -91,9 +91,8 @@ RUN echo $TZ > /etc/timezone \
     libaio1t64 \
     alien 
     # Microsoft driver
-RUN wget https://packages.microsoft.com/keys/microsoft.asc -O microsoft.asc && \
-    apt-key add microsoft.asc && \
-    wget https://packages.microsoft.com/config/ubuntu/20.04/prod.list -O prod.list && \
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | tee /etc/apt/trusted.gpg.d/microsoft.asc && \
+    wget https://packages.microsoft.com/config/ubuntu/24.04/prod.list -O prod.list && \
     cp prod.list /etc/apt/sources.list.d/mssql-release.list && \
     apt-get update && \
     ACCEPT_EULA=Y apt-get install -y \
