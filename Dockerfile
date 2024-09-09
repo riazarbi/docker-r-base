@@ -93,7 +93,7 @@ RUN echo $TZ > /etc/timezone \
     # Microsoft driver
 RUN wget https://packages.microsoft.com/keys/microsoft.asc -O microsoft.asc && \
     apt-key add microsoft.asc && \
-    wget https://packages.microsoft.com/config/ubuntu/24.04/prod.list -O prod.list && \
+    wget https://packages.microsoft.com/config/ubuntu/20.04/prod.list -O prod.list && \
     cp prod.list /etc/apt/sources.list.d/mssql-release.list && \
     apt-get update && \
     ACCEPT_EULA=Y apt-get install -y \
@@ -127,5 +127,6 @@ RUN python3 -m pip install minio --break-system-packages \
  && python3 -m pip install presto-python-client --break-system-packages \
  && python3 -m pip install exchangelib --break-system-packages \
  && rm -rf /tmp/*
+ 
  
  
